@@ -8,6 +8,9 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+
+    var port = environment.config.propertyOrNull("ktor.deployment.port")?.getString() ?: "9999"
+
     configureMonitoring()
     configureRouting()
 }

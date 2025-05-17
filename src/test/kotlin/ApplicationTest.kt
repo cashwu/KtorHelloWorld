@@ -105,5 +105,4 @@ class ApplicationTest {
         assertContains(body, "swimming")
         assertContains(body, "Clean the house")
     }
-
 }

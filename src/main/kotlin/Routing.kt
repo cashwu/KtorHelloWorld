@@ -5,6 +5,7 @@ import com.cashwu.model.Task
 import com.cashwu.model.TaskRepository
 import com.cashwu.model.tasksAsTable
 import io.ktor.http.*
+import io.ktor.serialization.JsonConvertException
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
@@ -159,7 +160,24 @@ fun Application.configureRouting() {
                     }
                     call.respond(tasks)
                 } catch (e: IllegalArgumentException) {
-                   call.respond(HttpStatusCode.BadRequest)
+                    call.respond(HttpStatusCode.BadRequest)
+                }
+            }
+
+            post("/addTask") {
+
+                try {
+                    val task = call.receive<Task>()
+                    TaskRepository.addTask(task)
+                    call.respond(HttpStatusCode.Created)
+                } catch (e: IllegalStateException) {
+                    print(e)
+                    print("message : " + e.message)
+                    call.respond(HttpStatusCode.BadRequest)
+                } catch (e: JsonConvertException) {
+                    print(e)
+                    print("message : " + e.message)
+                    call.respond(HttpStatusCode.BadRequest)
                 }
             }
         }

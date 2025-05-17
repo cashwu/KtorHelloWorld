@@ -56,3 +56,24 @@ GET localhost:8081/api/byName/painting
 ###
 
 GET localhost:8081/api/byPriority/Low
+
+###
+
+POST localhost:8081/api/addTask
+Content-Type: application/json
+
+{
+  "name": "cooking",
+  "description": "Cook the dinner",
+  "priority": "High"
+}
+
+###
+
+POST localhost:8081/api/addTask
+Content-Type: application/json
+
+{
+  "description": "Cook the dinner",
+  "priority": "High"
+}

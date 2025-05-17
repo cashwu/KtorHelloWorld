@@ -12,3 +12,8 @@ GET localhost:8081/test
 
 ###
 GET http://localhost:8081/content/sample.html
+
+
+###
+
+GET http://localhost:8081/error

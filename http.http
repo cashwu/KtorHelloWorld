@@ -70,10 +70,4 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8081/api/addTask
-Content-Type: application/json
-
-{
-  "description": "Cook the dinner",
-  "priority": "High"
-}
+DELETE localhost:8081/api/deleteTask/gardening

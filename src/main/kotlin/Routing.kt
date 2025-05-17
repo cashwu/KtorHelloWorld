@@ -12,6 +12,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.delay
 
 fun Application.configureRouting() {
 
@@ -178,6 +179,22 @@ fun Application.configureRouting() {
                     print(e)
                     print("message : " + e.message)
                     call.respond(HttpStatusCode.BadRequest)
+                }
+            }
+
+            delete("/deleteTask/{name}") {
+
+                val name = call.parameters["name"]
+
+                if (name == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@delete
+                }
+
+                if (TaskRepository.removeTask(name)) {
+                    call.respond(HttpStatusCode.NoContent)
+                } else {
+                    call.respond(HttpStatusCode.NotFound)
                 }
             }
         }

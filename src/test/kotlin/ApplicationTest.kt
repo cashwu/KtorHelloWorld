@@ -77,4 +77,33 @@ class ApplicationTest {
     }
 
 
+    @Test
+    fun testAddTask() = testApplication {
+        application {
+            module()
+        }
+
+        val response = client.post("/tasks") {
+            header(
+                HttpHeaders.ContentType,
+                ContentType.Application.FormUrlEncoded.toString()
+            )
+            setBody(
+                listOf(
+                    "name" to "swimming",
+                    "description" to "Clean the house",
+                    "priority" to "Low"
+                ).formUrlEncode()
+            )
+        }
+
+        assertEquals(HttpStatusCode.NoContent, response.status)
+
+        val getResponse = client.get("/tasks")
+        assertEquals(HttpStatusCode.OK, getResponse.status)
+        val body = getResponse.bodyAsText()
+        assertContains(body, "swimming")
+        assertContains(body, "Clean the house")
+    }
+
 }

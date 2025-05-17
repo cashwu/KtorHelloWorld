@@ -1,12 +1,14 @@
 package com.cashwu
 
 import com.cashwu.model.Priority
+import com.cashwu.model.Task
 import com.cashwu.model.TaskRepository
 import com.cashwu.model.tasksAsTable
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -75,6 +77,42 @@ fun Application.configureRouting() {
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest)
             }
+        }
+
+        post("/tasks") {
+            val formContent = call.receiveParameters()
+
+            val parms = Triple(
+                formContent["name"] ?: "",
+                formContent["description"] ?: "",
+                formContent["priority"] ?: ""
+            )
+
+            if (parms.toList().any() { it.isEmpty() }) {
+                call.respond(HttpStatusCode.BadRequest)
+                return@post
+            }
+
+            try {
+                val priority = Priority.valueOf(parms.third)
+
+                TaskRepository.addTask(
+                    Task(
+                        parms.first,
+                        parms.second,
+                        priority
+                    )
+                )
+
+                call.respond(HttpStatusCode.NoContent)
+//            call.respondRedirect("/tasks")
+
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest)
+            } catch (e: IllegalStateException) {
+                call.respond(HttpStatusCode.BadRequest)
+            }
+
         }
     }
 }

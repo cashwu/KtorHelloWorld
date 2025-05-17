@@ -32,3 +32,14 @@ GET localhost:8081/tasks/byPriority/Vital
 
 GET localhost:8081/task-ui/task-form.html
 
+###
+
+POST localhost:8081/tasks
+Content-Type: application/x-www-form-urlencoded
+
+name=ccca &
+description= adfsdf &
+priority= Low
+
+###
+

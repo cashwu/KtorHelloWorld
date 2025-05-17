@@ -45,3 +45,6 @@ priority= Low
 
 GET localhost:8081/api/tasks
 
+###
+
+GET localhost:8081/static/index.html

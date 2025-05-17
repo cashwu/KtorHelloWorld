@@ -1,5 +1,7 @@
 package com.cashwu
 
+import com.cashwu.model.tasks
+import com.cashwu.model.tasksAsTable
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
@@ -36,13 +38,7 @@ fun Application.configureRouting() {
         get("/tasks") {
             call.respondText(
                 contentType = ContentType.Text.Html,
-                text = """
-                <h3>TODO:</h3>
-                <ol>
-                    <li>A table of all the tasks</li>
-                    <li>A form to submit new tasks</li>
-                </ol>
-                """.trimIndent()
+                text = tasks.tasksAsTable()
             )
         }
     }

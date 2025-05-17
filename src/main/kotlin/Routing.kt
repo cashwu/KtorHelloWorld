@@ -116,5 +116,13 @@ fun Application.configureRouting() {
 
             }
         }
+
+        route("/api") {
+
+            get("/tasks") {
+                val tasks = TaskRepository.allTasks()
+                call.respond(tasks)
+            }
+        }
     }
 }

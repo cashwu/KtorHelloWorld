@@ -43,3 +43,5 @@ priority= Low
 
 ###
 
+GET localhost:8081/api/tasks
+

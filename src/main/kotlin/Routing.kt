@@ -1,22 +1,21 @@
 package com.cashwu
 
-import com.cashwu.model.tasks
+import com.cashwu.model.TaskRepository
 import com.cashwu.model.tasksAsTable
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.staticResources
-import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.http.content.*
+import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
 
     install(StatusPages) {
-    exception<Throwable> { call, cause ->
-        call.respondText(text = "500: ${cause.message}" , status = HttpStatusCode.InternalServerError)
+        exception<Throwable> { call, cause ->
+            call.respondText(text = "500: ${cause.message}", status = HttpStatusCode.InternalServerError)
+        }
     }
-}
     routing {
 
         staticResources("/content", "myContent")
@@ -32,10 +31,13 @@ fun Application.configureRouting() {
         }
 
         get("/error") {
-           throw IllegalArgumentException("Invalid argument")
+            throw IllegalArgumentException("Invalid argument")
         }
 
         get("/tasks") {
+
+            val tasks = TaskRepository.allTasks()
+
             call.respondText(
                 contentType = ContentType.Text.Html,
                 text = tasks.tasksAsTable()

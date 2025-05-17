@@ -36,4 +36,45 @@ class ApplicationTest {
         assertContains(response.bodyAsText(), "<h1>Hello World!</h1>")
     }
 
+    @Test
+    fun testByPriority() = testApplication {
+
+        application {
+            module()
+        }
+
+        val response = client.get("/tasks/byPriority/Medium")
+        val body = response.bodyAsText()
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertContains(body, "Mow the lawn")
+        assertContains(body, "Paint the fence")
+    }
+
+    @Test
+    fun testByPriorityInvalid() = testApplication {
+
+        application {
+            module()
+        }
+
+        val response = client.get("/tasks/byPriority/invalid")
+
+        assertEquals(HttpStatusCode.BadRequest, response.status)
+    }
+
+    @Test
+    fun testByPriorityNotFound() = testApplication {
+
+        application {
+            module()
+        }
+
+        val response = client.get("/tasks/byPriority/Vital")
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertContains(response.bodyAsText(), "No tasks found")
+    }
+
+
 }

@@ -124,6 +124,44 @@ fun Application.configureRouting() {
                 val tasks = TaskRepository.allTasks()
                 call.respond(tasks)
             }
+
+            get("/byName/{name}") {
+                val name = call.parameters["name"]
+                if (name == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+                val task = TaskRepository.taskByName(name)
+                if (task == null) {
+                    call.respond(HttpStatusCode.NotFound)
+                } else {
+                    call.respond(task)
+                }
+            }
+
+            get("/byPriority/{priority}") {
+
+                val priorityAsText = call.parameters["priority"]
+                print("priorityAsText: $priorityAsText")
+
+                if (priorityAsText == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+
+                try {
+                    val priority = Priority.valueOf(priorityAsText)
+                    val tasks = TaskRepository.tasksByPriority(priority)
+
+                    if (tasks.isEmpty()) {
+                        call.respond(HttpStatusCode.NotFound)
+                        return@get
+                    }
+                    call.respond(tasks)
+                } catch (e: IllegalArgumentException) {
+                   call.respond(HttpStatusCode.BadRequest)
+                }
+            }
         }
     }
 }

@@ -48,3 +48,11 @@ GET localhost:8081/api/tasks
 ###
 
 GET localhost:8081/static/index.html
+
+###
+
+GET localhost:8081/api/byName/painting
+
+###
+
+GET localhost:8081/api/byPriority/Low

@@ -3,4 +3,4 @@ ktor:
     modules:
       - com.cashwu.ApplicationKt.module
   deployment:
-    port: 8080
+    port: 8081

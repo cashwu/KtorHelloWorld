@@ -22,3 +22,8 @@ GET http://localhost:8081/error
 ###
 
 GET http://localhost:8081/tasks
+
+
+### Low, Medium, High, Vital
+
+GET localhost:8081/tasks/byPriority/Vital

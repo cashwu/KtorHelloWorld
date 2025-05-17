@@ -1,5 +1,6 @@
 package com.cashwu
 
+import com.cashwu.model.Priority
 import com.cashwu.model.TaskRepository
 import com.cashwu.model.tasksAsTable
 import io.ktor.http.*
@@ -42,6 +43,37 @@ fun Application.configureRouting() {
                 contentType = ContentType.Text.Html,
                 text = tasks.tasksAsTable()
             )
+        }
+
+        get("/tasks/byPriority/{priority}") {
+
+            val priorityAsText = call.parameters["priority"]
+
+            if (priorityAsText == null) {
+                call.respond(HttpStatusCode.BadRequest)
+                return@get
+            }
+
+            try {
+                val priority = Priority.valueOf(priorityAsText)
+
+                val tasks = TaskRepository.tasksByPriority(priority)
+
+                if (tasks.isEmpty()) {
+                    call.respondText(
+                        contentType = ContentType.Text.Html,
+                        text = "<h1>No tasks found</h1>"
+                    )
+                    return@get
+                }
+
+                call.respondText(
+                    contentType = ContentType.Text.Html,
+                    text = tasks.tasksAsTable()
+                )
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest)
+            }
         }
     }
 }

@@ -17,3 +17,8 @@ GET http://localhost:8081/content/sample.html
 ###
 
 GET http://localhost:8081/error
+
+
+###
+
+GET http://localhost:8081/tasks

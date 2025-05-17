@@ -32,5 +32,18 @@ fun Application.configureRouting() {
         get("/error") {
            throw IllegalArgumentException("Invalid argument")
         }
+
+        get("/tasks") {
+            call.respondText(
+                contentType = ContentType.Text.Html,
+                text = """
+                <h3>TODO:</h3>
+                <ol>
+                    <li>A table of all the tasks</li>
+                    <li>A form to submit new tasks</li>
+                </ol>
+                """.trimIndent()
+            )
+        }
     }
 }
